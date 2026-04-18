@@ -85,10 +85,10 @@ module.exports = {
         "accordion-up": "accordion-up 0.2s ease-out",
       },
       fontFamily: {
-        Mainfront: ["plusSans", "sense-sarif"],
-        Inter: ["inter", "sense-sarif"],
-        BeVietnam: ["beVietnam", "sense-sarif"],
-        productSans: ["productSans", "sense-sarif"],
+        Mainfront: ["plusSans", "sans-serif"],
+        Inter: ["inter", "sans-serif"],
+        BeVietnam: ["beVietnam", "sans-serif"],
+        productSans: ["productSans", "sans-serif"],
       },
       screens: {
         xssm: "375px",

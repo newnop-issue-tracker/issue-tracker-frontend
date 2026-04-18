@@ -158,16 +158,10 @@ function NavComponent() {
           {/* Sidebar Header */}
           <div className="flex items-center justify-between p-4 border-b border-gray-200">
             <IssueFlowLogo />
-            <button
-              className="text-brand-charcoal hover:text-brand-red transition-colors"
-              onClick={() => setIsSidebarOpen(false)}
-            >
-              <MdClose size={22} />
-            </button>
           </div>
 
           {/* Sidebar Auth Buttons */}
-          <div className="mt-auto p-4 space-y-2 border-t border-gray-200">
+          <div className="mt-auto p-4 flex flex-col gap-3 border-t border-gray-200">
             {currentUser ? (
               <>
                 <p className="text-sm text-gray-600 mb-2 font-Mainfront">
@@ -184,7 +178,7 @@ function NavComponent() {
               </>
             ) : (
               <>
-                <a href="/signup" onClick={() => setIsSidebarOpen(false)}>
+                <a href="/signup" onClick={() => setIsSidebarOpen(false)} className="block w-full">
                   <CustomButton
                     title="SignUp"
                     variant="outline"
@@ -194,7 +188,7 @@ function NavComponent() {
                     className="w-full text-left"
                   />
                 </a>
-                <a href="/signin" onClick={() => setIsSidebarOpen(false)}>
+                <a href="/signin" onClick={() => setIsSidebarOpen(false)} className="block w-full">
                   <CustomButton
                     title="Login"
                     variant="outline"
