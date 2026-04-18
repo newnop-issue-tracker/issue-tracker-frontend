@@ -9,6 +9,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { signUp } from "../api/user.api";
 import axios from "axios";
 import IssueFlowLogo from "@/components/UI/IssueFlowLogo";
+import AuthSide from "@/components/auth/AuthSide";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -153,12 +154,8 @@ const SignUp = () => {
     <div className="max-w-[1920px] mx-auto w-full flex lg:flex-row flex-col min-h-[calc(100vh-80px)] lg:h-[calc(100vh-80px)]">
       <Toaster position="top-right" reverseOrder={false} />
 
-      <div className="lg:w-1/2 lg:flex hidden flex-1 h-full bg-gray-100">
-        <img
-          src=""
-          alt="Laptop Background"
-          className="w-full h-full object-cover"
-        />
+      <div className="lg:w-1/2 lg:flex hidden flex-1 h-full">
+        <AuthSide />
       </div>
 
       {/* Form Section */}
