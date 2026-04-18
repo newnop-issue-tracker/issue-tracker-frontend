@@ -19,16 +19,16 @@ module.exports = {
     extend: {
       colors: {
         // Custom Colors
-        "event-red": "#EE1133",
-        "event-navy": "#1A2B4C",
-        "event-white": "#FFFFFF",
-        "event-gray": "#F5F5F7",
-        "event-charcoal": "#2C3E50",
-        "event-blue": "#3498DB",
+        "brand-red": "#EE1133",
+        "brand-navy": "#1A2B4C",
+        "brand-white": "#FFFFFF",
+        "brand-gray": "#F5F5F7",
+        "brand-charcoal": "#2C3E50",
+        "brand-blue": "#3498DB",
         // Alternative Reds
-        "event-red-vibrant": "#E31837",
-        "event-red-classic": "#DC143C",
-        "event-red-dark": "#C41230",
+        "brand-red-vibrant": "#E31837",
+        "brand-red-classic": "#DC143C",
+        "brand-red-dark": "#C41230",
 
         // Original Shadcn Colors
         border: "hsl(var(--border))",

@@ -71,9 +71,7 @@ const Home = () => {
         </div>
       </main>
 
-      <div className="dark">
-         <Footer />
-      </div>
+      <Footer />
     </div>
   );
 };

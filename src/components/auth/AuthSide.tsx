@@ -21,7 +21,7 @@ const AuthSide = () => {
       className="w-full h-full bg-slate-950 relative flex items-center justify-center overflow-hidden"
     >
       {/* Static Glow underneath to ensure it looks good even without mouse movement */}
-      <div className="absolute inset-0 bg-event-navy/20 pointer-events-none" />
+      <div className="absolute inset-0 bg-brand-navy/20 pointer-events-none" />
 
       {/* Sharp SVG Square Grid */}
       <div className="absolute inset-0 z-0 pointer-events-none [mask-image:linear-gradient(to_bottom,white,transparent)]">

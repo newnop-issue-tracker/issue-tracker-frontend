@@ -205,7 +205,7 @@ function SignIn() {
           <div className="w-full flex justify-end items-end mt-2">
             <Link
               to="/forgot-password"
-              className="text-[14px] text-event-navy font-PlusSans hover:text-[#000] hover:underline cursor-pointer"
+              className="text-[14px] text-brand-navy font-PlusSans hover:text-[#000] hover:underline cursor-pointer"
             >
               Forgot Password?
             </Link>
@@ -250,7 +250,7 @@ function SignIn() {
           <h1 className="flex items-center justify-center mt-[12px] font-PlusSans text-[#646464] text-sm leading-6 ">
             If you haven't an account?{" "}
             <span
-              className="text-event-navy font-semibold hover:text-[#000] ml-2.5 hover:underline cursor-pointer"
+              className="text-brand-navy font-semibold hover:text-[#000] ml-2.5 hover:underline cursor-pointer"
               onClick={() => navigate("/signup")}
             >
               Sign Up

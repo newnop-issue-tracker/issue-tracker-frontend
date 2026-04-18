@@ -65,7 +65,7 @@
 .menu-pagination .swiper-pagination-bullet-active {
   width: 48px;
   height: 16px;
-  background: var(--event-navy, #1148ee);
+  background: var(--brand-navy, #1148ee);
   border-radius: 63px;
   transition: width 0.3s ease;
 }

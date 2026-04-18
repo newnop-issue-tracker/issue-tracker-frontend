@@ -29,9 +29,9 @@ const CustomButton = ({
     "flex items-center justify-center px-6 py-3 text-sm font-medium transition-colors rounded-md",
     className,
     {
-      "bg-event-navy text-event-white hover:bg-event-charcoal":
+      "bg-brand-navy text-brand-white hover:bg-brand-charcoal":
         variant === "primary",
-      "border border-event-navy text-event-navy hover:bg-event-navy hover:text-white":
+      "border border-brand-navy text-brand-navy hover:bg-brand-navy hover:text-white":
         variant === "outline",
       "w-fit": fitWidth,
       "w-full": !fitWidth,

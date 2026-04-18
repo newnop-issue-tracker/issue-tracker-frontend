@@ -364,7 +364,7 @@ const SignUp = () => {
           <h1 className="flex items-center justify-center mt-[12px] font-PlusSans text-[#646464] text-sm leading-6 ">
             If you have an account?{" "}
             <span
-              className="text-event-navy font-semibold hover:text-[#000] ml-2.5 hover:underline cursor-pointer"
+              className="text-brand-navy font-semibold hover:text-[#000] ml-2.5 hover:underline cursor-pointer"
               onClick={() => navigate("/signin")}
             >
               Sign In

@@ -77,10 +77,10 @@ function NavComponent() {
   };
 
   return (
-    <div className={`flex flex-col w-full sticky top-0 z-50 bg-event-white ${isScrolled ? "shadow-md" : ""}`}>
+    <div className={`flex flex-col w-full sticky top-0 z-50 bg-brand-white ${isScrolled ? "shadow-md" : ""}`}>
       {/* Navbar */}
       <div
-        className={`flex items-center justify-between w-full px-4 sm:px-14 py-4 bg-event-white max-w-[1920px] mx-auto ${
+        className={`flex items-center justify-between w-full px-4 sm:px-14 py-4 bg-brand-white max-w-[1920px] mx-auto ${
           isScrolled ? "border-b border-gray-200" : ""
         }`}
       >
@@ -91,7 +91,7 @@ function NavComponent() {
 
         {/* Hamburger Menu (Visible below sm) */}
         <button
-          className="sm:hidden text-event-charcoal sidebar-toggle"
+          className="sm:hidden text-brand-charcoal sidebar-toggle"
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
         >
           {isSidebarOpen ? <MdClose size={24} /> : <MdMenu size={24} />}
@@ -101,7 +101,7 @@ function NavComponent() {
         <div className="hidden sm:flex items-center gap-x-4">
           {currentUser ? (
             <>
-              <span className="text-sm text-event-charcoal font-Mainfront">
+              <span className="text-sm text-brand-charcoal font-Mainfront">
                 Hi, {currentUser.fullName}
               </span>
               <CustomButton
@@ -149,7 +149,7 @@ function NavComponent() {
 
       {/* Sidebar (Visible below sm) */}
       <div
-        className={`fixed top-0 left-0 h-full w-64 bg-event-white z-50 transform ${
+        className={`fixed top-0 left-0 h-full w-64 bg-brand-white z-50 transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         } transition-transform duration-300 sm:hidden shadow-xl`}
         ref={sidebarRef}
@@ -159,7 +159,7 @@ function NavComponent() {
           <div className="flex items-center justify-between p-4 border-b border-gray-200">
             <IssueFlowLogo />
             <button
-              className="text-event-charcoal hover:text-event-red transition-colors"
+              className="text-brand-charcoal hover:text-brand-red transition-colors"
               onClick={() => setIsSidebarOpen(false)}
             >
               <MdClose size={22} />
@@ -230,7 +230,7 @@ function NavComponent() {
             </button>
             <button
               onClick={handleLogout}
-              className="px-4 py-2 bg-event-red text-white rounded-md hover:bg-red-700 transition-colors"
+              className="px-4 py-2 bg-brand-red text-white rounded-md hover:bg-red-700 transition-colors"
             >
               Logout
             </button>
