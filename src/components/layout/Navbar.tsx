@@ -1,8 +1,8 @@
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { Avatar } from '@/components/UI/Avatar';
 import { Button } from '@/components/UI/Button';
 import { Icon } from '@/components/UI/Icon';
-import { Logo } from '@/components/UI/Logo';
+import IssueFlowLogo from '@/components/UI/IssueFlowLogo';
 import { useAuthStore } from '@/store/authStore';
 import { useUiStore } from '@/store/uiStore';
 import { useLogout } from '@/features/auth/hooks';
@@ -22,7 +22,9 @@ export function Navbar({ onCreate }: NavbarProps) {
 
   return (
     <nav className="navbar">
-      <Logo />
+      <Link to="/" style={{ textDecoration: 'none' }}>
+        <IssueFlowLogo />
+      </Link>
 
       <div className="nav-search" onClick={openCmd}>
         <Icon.Search />
