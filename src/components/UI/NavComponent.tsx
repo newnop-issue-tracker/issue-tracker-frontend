@@ -7,6 +7,12 @@ import IssueFlowLogo from "@/components/UI/IssueFlowLogo";
 import { toast } from "react-hot-toast";
 
 interface User {
+  role: string;
+  fullName: string;
+  email: string;
+}
+
+function NavComponent() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);

@@ -150,10 +150,10 @@ const SignUp = () => {
   };
 
   return (
-    <div className="max-w-[1920px] mx-auto w-full flex lg:flex-row flex-col">
+    <div className="max-w-[1920px] mx-auto w-full flex lg:flex-row flex-col min-h-[calc(100vh-80px)] lg:h-[calc(100vh-80px)]">
       <Toaster position="top-right" reverseOrder={false} />
 
-      <div className="lg:w-1/2 lg:block hidden">
+      <div className="lg:w-1/2 lg:flex hidden flex-1 h-full bg-gray-100">
         <img
           src=""
           alt="Laptop Background"
@@ -162,7 +162,7 @@ const SignUp = () => {
       </div>
 
       {/* Form Section */}
-      <div className="flex flex-col w-full lg:w-[45%] px-[20px] pt-[20px] sm:px-[30px] sm:pt-[30px] md:px-20 lg:pt-[80px] lg:px-[60px] 2xl:pt-[154px] 2xl:px-[165px]">
+      <div className="flex flex-col w-full lg:w-[45%] lg:mx-auto px-[20px] pt-[20px] sm:px-[30px] sm:pt-[30px] md:px-20 lg:pt-[40px] lg:px-[60px] 2xl:pt-[80px] 2xl:px-[165px] h-full overflow-y-auto pb-6">
         <div className="w-full lg:block hidden">
           <Link to="/">
             <IssueFlowLogo />
