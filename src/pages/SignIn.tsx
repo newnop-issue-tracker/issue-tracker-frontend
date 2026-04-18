@@ -8,6 +8,8 @@ import toast, { Toaster } from "react-hot-toast";
  import { signIn } from "../api/user.api";
 import axios from "axios";
 
+import IssueFlowLogo from "@/components/UI/IssueFlowLogo";
+
 function SignIn() {
   const navigate = useNavigate();
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -136,7 +138,7 @@ function SignIn() {
       <div className="flex flex-col w-full lg:w-[45%] px-[20px] pt-[20px] sm:px-[30px] sm:pt-[30px] md:px-20 lg:pt-[80px] lg:px-[60px] 2xl:pt-[154px] 2xl:px-[165px]">
         <div className="w-full lg:block hidden">
           <Link to="/">
-            <img src="" alt="logo" className="w-[112px] h-[54px]" />
+            <IssueFlowLogo />
           </Link>
         </div>
 
