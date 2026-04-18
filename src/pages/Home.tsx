@@ -1,13 +1,31 @@
+import { useState, useRef } from "react";
 import { FiArrowRight, FiGithub } from "react-icons/fi";
 import CustomButton from "@/components/UI/Button";
 import { Link } from "react-router-dom";
 import Footer from "@/components/UI/Footer";
 
 const Home = () => {
+  const [mousePosition, setMousePosition] = useState({ x: -1000, y: -1000 });
+  const containerRef = useRef<HTMLElement>(null);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
+    if (containerRef.current) {
+      const rect = containerRef.current.getBoundingClientRect();
+      setMousePosition({
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top,
+      });
+    }
+  };
+
   return (
     <div className="flex flex-col bg-slate-950 w-full overflow-x-hidden">
       {/* Hero Section takes exactly full screen minus nav */}
-      <main className="relative min-h-[calc(100vh-73px)] w-full flex flex-col items-center justify-center font-Inter lg:py-0">
+      <main 
+        ref={containerRef}
+        onMouseMove={handleMouseMove}
+        className="relative min-h-[calc(100vh-73px)] w-full flex flex-col items-center justify-center font-Inter lg:py-0 overflow-hidden"
+      >
         {/* Background Graphic Effect */}
         <div className="absolute inset-0 z-0 pointer-events-none [mask-image:linear-gradient(to_bottom,white_40%,transparent)]">
           <svg className="absolute inset-0 h-full w-full stroke-white/[0.05]" aria-hidden="true">
@@ -19,6 +37,18 @@ const Home = () => {
             <rect width="100%" height="100%" strokeWidth="0" fill="url(#hero-grid)" />
           </svg>
         </div>
+
+        {/* Interactive Mouse Flashlight Effect overlaid on grid */}
+        <div 
+          className="absolute inset-0 z-0 pointer-events-none transition-opacity duration-300 mix-blend-screen"
+          style={{
+            background: `radial-gradient(
+              600px circle at ${mousePosition.x}px ${mousePosition.y}px,
+              rgba(255, 255, 255, 0.06),
+              transparent 40%
+            )`
+          }}
+        />
 
         {/* Background Gradient Glowing Orbs */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
@@ -55,7 +85,7 @@ const Home = () => {
                 variant="primary"
                 icon={<FiArrowRight className="w-5 h-5" />}
                 iconPosition="right"
-                className="text-base px-8 py-6 rounded-full shadow-lg shadow-blue-500/20 hover:shadow-xl hover:-translate-y-0.5 transition-all w-full sm:w-auto"
+                className="text-base px-8 py-6 rounded-lg bg-white/5 border border-white/20 text-white hover:bg-white hover:text-slate-900 transition-all duration-300 w-full sm:w-auto"
               />
             </Link>
             <a href="https://github.com" target="_blank" rel="noreferrer">
@@ -64,7 +94,7 @@ const Home = () => {
                 variant="outline"
                 icon={<FiGithub className="w-5 h-5" />}
                 iconPosition="left"
-                className="text-base px-8 py-6 rounded-full bg-transparent border-white/20 text-white hover:bg-white/5 w-full sm:w-auto"
+                className="text-base px-8 py-6 rounded-lg bg-transparent border-white/20 text-white hover:bg-white hover:text-slate-900 transition-all duration-300 w-full sm:w-auto"
               />
             </a>
           </div>
