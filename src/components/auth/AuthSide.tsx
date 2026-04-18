@@ -20,26 +20,32 @@ const AuthSide = () => {
       onMouseMove={handleMouseMove}
       className="w-full h-full bg-slate-950 relative flex items-center justify-center overflow-hidden"
     >
-      {/* Grid background with flashlight effect */}
-      <div 
-        className="absolute inset-0 z-0 pointer-events-none transition-opacity duration-300"
-        style={{
-          background: `
-            radial-gradient(
-              600px circle at ${mousePosition.x}px ${mousePosition.y}px,
-              rgba(255,255,255,0.1),
-              transparent 40%
-            ),
-            linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)
-          `,
-          backgroundSize: '100% 100%, 32px 32px, 32px 32px',
-          backgroundPosition: '0 0, center center, center center',
-        }}
-      />
-
       {/* Static Glow underneath to ensure it looks good even without mouse movement */}
       <div className="absolute inset-0 bg-event-navy/20 pointer-events-none" />
+
+      {/* Sharp SVG Square Grid */}
+      <div className="absolute inset-0 z-0 pointer-events-none [mask-image:linear-gradient(to_bottom,white,transparent)]">
+        <svg className="absolute inset-0 h-full w-full stroke-white/[0.05]" aria-hidden="true">
+          <defs>
+            <pattern id="square-grid" width="32" height="32" patternUnits="userSpaceOnUse">
+              <path d="M.5 32V.5H32" fill="none" strokeDasharray="0" />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" strokeWidth="0" fill="url(#square-grid)" />
+        </svg>
+      </div>
+
+      {/* Interactive Mouse Flashlight Effect overlaid on grid */}
+      <div 
+        className="absolute inset-0 z-0 pointer-events-none transition-opacity duration-300 mix-blend-screen"
+        style={{
+          background: `radial-gradient(
+            600px circle at ${mousePosition.x}px ${mousePosition.y}px,
+            rgba(255, 255, 255, 0.08),
+            transparent 40%
+          )`
+        }}
+      />
 
       <div className="relative z-10 max-w-[380px] w-full px-4 font-Inter">
         {/* Card 1 */}

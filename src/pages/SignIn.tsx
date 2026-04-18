@@ -258,7 +258,7 @@ function SignIn() {
           </h1>
         </div>
         <div className="flex justify-center items-center text-xs text-black leading-6 mt-auto font-PlusSans lg:py-7 py-3">
-          2025 © All rights reserved
+          2026 © All rights reserved
         </div>
       </div>
     </div>

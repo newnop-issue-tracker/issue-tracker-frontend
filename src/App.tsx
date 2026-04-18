@@ -1,8 +1,9 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
+import NavComponent from "./components/UI/NavComponent";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
-import NavComponent from "./components/UI/NavComponent";
+import Home from "./pages/Home";
 
 function AppLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -19,9 +20,10 @@ function App() {
       <Toaster position="top-right" reverseOrder={false} />
       <AppLayout>
         <Routes>
+          <Route path="/" element={<Home />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
-          <Route path="*" element={<Navigate to="/signin" replace />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </AppLayout>
     </BrowserRouter>

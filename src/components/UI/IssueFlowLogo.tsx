@@ -8,7 +8,7 @@ function IssueFlowLogo({ className = "" }: IssueFlowLogoProps) {
       <div className="w-8 h-8 bg-event-navy rounded-lg flex items-center justify-center">
         <span className="text-white font-bold text-lg">/</span>
       </div>
-      <span className="text-event-charcoal font-bold text-xl font-Mainfront tracking-tight">
+      <span className="text-event-charcoal dark:text-white font-bold text-xl font-Mainfront tracking-tight">
         IssueFlow
       </span>
     </div>
