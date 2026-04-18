@@ -1,18 +1,14 @@
-// import hero from "/Images/Home/hero.webp";
-// import logo from "/Images/NavBar/logo.webp?url";
 import { useState } from "react";
 import CustomButton from "@/components/UI/Button";
 import { IoEyeOutline } from "react-icons/io5";
 import { IoEyeOffOutline } from "react-icons/io5";
-import { Link, useNavigate } from "react-router-dom";
-import toast, { Toaster } from "react-hot-toast";
-import { signUp } from "../api/user.api";
-import axios from "axios";
+import { Link } from "react-router-dom";
 import IssueFlowLogo from "@/components/UI/IssueFlowLogo";
 import AuthSide from "@/components/auth/AuthSide";
+import { useRegister } from "@/features/auth/hooks";
 
 const SignUp = () => {
-  const navigate = useNavigate();
+  const registerMutation = useRegister();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
   const [formData, setFormData] = useState({
@@ -20,53 +16,32 @@ const SignUp = () => {
     email: "",
     password: "",
     confirmPassword: "",
-    phone: "",
-    address: "",
   });
   const [errors, setErrors] = useState({
     fullName: "",
     email: "",
     password: "",
     confirmPassword: "",
-    phone: "",
-    address: "",
   });
-  const [isLoading, setIsLoading] = useState(false);
-
-  const togglePasswordVisibility = () => {
-    setPasswordVisible(!passwordVisible);
-  };
-
-  const toggleConfirmPasswordVisibility = () => {
-    setConfirmPasswordVisible(!confirmPasswordVisible);
-  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-    setErrors((prev) => ({
-      ...prev,
-      [name]: "",
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
   const validateForm = () => {
     let isValid = true;
-    const newErrors = { ...errors };
+    const newErrors = { fullName: "", email: "", password: "", confirmPassword: "" };
 
-    // Full Name validation
     if (!formData.fullName.trim()) {
       newErrors.fullName = "Full Name is required";
       isValid = false;
-    } else if (formData.fullName.length < 3) {
-      newErrors.fullName = "Full Name must be at least 3 characters";
+    } else if (formData.fullName.length < 2) {
+      newErrors.fullName = "Full Name must be at least 2 characters";
       isValid = false;
     }
 
-    // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!formData.email) {
       newErrors.email = "Email is required";
@@ -76,32 +51,14 @@ const SignUp = () => {
       isValid = false;
     }
 
-    // Phone validation
-    const phoneRegex = /^0[0-9]{9}$/;
-    if (!formData.phone) {
-      newErrors.phone = "Phone number is required";
-      isValid = false;
-    } else if (!phoneRegex.test(formData.phone)) {
-      newErrors.phone = "Please enter a valid 10-digit phone number starting with 0";
-      isValid = false;
-    }
-
-    // Address validation
-    if (!formData.address.trim()) {
-      newErrors.address = "Address is required";
-      isValid = false;
-    }
-
-    // Password validation
     if (!formData.password) {
       newErrors.password = "Password is required";
       isValid = false;
-    } else if (formData.password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters";
+    } else if (formData.password.length < 8) {
+      newErrors.password = "Password must be at least 8 characters";
       isValid = false;
     }
 
-    // Confirm Password validation
     if (!formData.confirmPassword) {
       newErrors.confirmPassword = "Please confirm your password";
       isValid = false;
@@ -114,46 +71,17 @@ const SignUp = () => {
     return isValid;
   };
 
-  const handleFormSubmit = async () => {
-    if (!validateForm()) {
-      toast.error("Please fix the errors before submitting");
-      return;
-    }
-
-    setIsLoading(true);
-    try {
-      const response = await signUp({
-        fullName: formData.fullName,
-        email: formData.email,
-        password: formData.password,
-        phone: formData.phone,
-        address: formData.address,
-        role: "customer"
-      });
-
-      if (response) {
-        toast.success("Registration successful!");
-        setTimeout(() => {
-          navigate("/signin");
-        }, 1500);
-      }
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        const errorMessage = error.response?.data?.message || error.response?.data?.msg || "Registration failed";
-        toast.error(errorMessage);
-      } else {
-        toast.error("Something went wrong. Please try again.");
-      }
-      console.error("Registration error:", error);
-    } finally {
-      setIsLoading(false);
-    }
+  const handleFormSubmit = () => {
+    if (!validateForm()) return;
+    registerMutation.mutate({
+      name: formData.fullName,
+      email: formData.email,
+      password: formData.password,
+    });
   };
 
   return (
     <div className="max-w-[1920px] mx-auto w-full flex lg:flex-row flex-col min-h-[calc(100vh-80px)] lg:h-[calc(100vh-80px)]">
-      <Toaster position="top-right" reverseOrder={false} />
-
       <div className="lg:w-1/2 lg:flex hidden flex-1 h-full">
         <AuthSide />
       </div>
@@ -166,9 +94,8 @@ const SignUp = () => {
           </Link>
         </div>
 
-        {/* Sign Up Section */}
         <div className="flex flex-col w-full lg:mt-10">
-          <h2 className="font-PlusSans text-[24px] font-bold text-[#000] leading-[32px] lg:text-[36px] ">
+          <h2 className="font-PlusSans text-[24px] font-bold text-[#000] leading-[32px] lg:text-[36px]">
             Sign Up
           </h2>
           <span className="mt-5 lg:leading-8 lg:text-base text-black font-PlusSans text-sm leading-6 font-medium">
@@ -182,16 +109,10 @@ const SignUp = () => {
               value={formData.fullName}
               onChange={handleInputChange}
               placeholder="Full Name"
-              className={`w-full text-[14px] font-PlusSans placeholder:text-[#646464] text-black leading-[24px] font-normal focus:outline-none ${errors.fullName ? "text-red-500" : ""
-                }`}
+              className={`w-full text-[14px] font-PlusSans placeholder:text-[#646464] text-black leading-[24px] font-normal focus:outline-none ${errors.fullName ? "text-red-500" : ""}`}
             />
-            <div
-              className={`h-[1px] w-full ${errors.fullName ? "bg-red-500" : "bg-[#000]"
-                } mt-[4px]`}
-            ></div>
-            {errors.fullName && (
-              <p className="text-red-500 text-xs mt-1">{errors.fullName}</p>
-            )}
+            <div className={`h-[1px] w-full ${errors.fullName ? "bg-red-500" : "bg-[#000]"} mt-[4px]`} />
+            {errors.fullName && <p className="text-red-500 text-xs mt-1">{errors.fullName}</p>}
           </div>
 
           <div className="mt-[32px]">
@@ -201,93 +122,35 @@ const SignUp = () => {
               value={formData.email}
               onChange={handleInputChange}
               placeholder="Email"
-              className={`w-full text-[14px] font-PlusSans placeholder:text-[#646464] text-black leading-[24px] font-normal focus:outline-none ${errors.email ? "text-red-500" : ""
-                }`}
+              className={`w-full text-[14px] font-PlusSans placeholder:text-[#646464] text-black leading-[24px] font-normal focus:outline-none ${errors.email ? "text-red-500" : ""}`}
             />
-            <div
-              className={`h-[1px] w-full ${errors.email ? "bg-red-500" : "bg-[#000]"
-                } mt-[4px]`}
-            ></div>
-            {errors.email && (
-              <p className="text-red-500 text-xs mt-1">{errors.email}</p>
-            )}
+            <div className={`h-[1px] w-full ${errors.email ? "bg-red-500" : "bg-[#000]"} mt-[4px]`} />
+            {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
           </div>
 
-          <div className="mt-[32px]">
-            <input
-              type="tel"
-              name="phone"
-              value={formData.phone}
-              onChange={handleInputChange}
-              placeholder="Phone Number"
-              className={`w-full text-[14px] font-PlusSans placeholder:text-[#646464] text-black leading-[24px] font-normal focus:outline-none ${errors.phone ? "text-red-500" : ""
-                }`}
-            />
-            <div
-              className={`h-[1px] w-full ${errors.phone ? "bg-red-500" : "bg-[#000]"
-                } mt-[4px]`}
-            ></div>
-            {errors.phone && (
-              <p className="text-red-500 text-xs mt-1">{errors.phone}</p>
-            )}
-          </div>
-
-          <div className="mt-[32px]">
-            <input
-              type="text"
-              name="address"
-              value={formData.address}
-              onChange={handleInputChange}
-              placeholder="Address"
-              className={`w-full text-[14px] font-PlusSans placeholder:text-[#646464] text-black leading-[24px] font-normal focus:outline-none ${errors.address ? "text-red-500" : ""
-                }`}
-            />
-            <div
-              className={`h-[1px] w-full ${errors.address ? "bg-red-500" : "bg-[#000]"
-                } mt-[4px]`}
-            ></div>
-            {errors.address && (
-              <p className="text-red-500 text-xs mt-1">{errors.address}</p>
-            )}
-          </div>
-
-          {/* Password Text box and underline */}
           <div className="mt-[36px] relative">
             <input
               type={passwordVisible ? "text" : "password"}
               name="password"
               value={formData.password}
               onChange={handleInputChange}
-              placeholder="Password"
-              className={`w-full text-[14px] font-PlusSans placeholder:text-[#646464] text-black leading-[24px] font-normal focus:outline-none ${errors.password ? "text-red-500" : ""
-                }`}
+              placeholder="Password (8+ chars)"
+              className={`w-full text-[14px] font-PlusSans placeholder:text-[#646464] text-black leading-[24px] font-normal focus:outline-none ${errors.password ? "text-red-500" : ""}`}
             />
             <div
               className="absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer"
-              onClick={togglePasswordVisibility}
+              onClick={() => setPasswordVisible(!passwordVisible)}
             >
               {passwordVisible ? (
-                <IoEyeOutline
-                  size={20}
-                  color={errors.password ? "#ef4444" : "#646464"}
-                />
+                <IoEyeOutline size={20} color={errors.password ? "#ef4444" : "#646464"} />
               ) : (
-                <IoEyeOffOutline
-                  size={20}
-                  color={errors.password ? "#ef4444" : "#646464"}
-                />
+                <IoEyeOffOutline size={20} color={errors.password ? "#ef4444" : "#646464"} />
               )}
             </div>
           </div>
-          <div
-            className={`h-[1px] w-full ${errors.password ? "bg-red-500" : "bg-[#000]"
-              } mt-[4px]`}
-          ></div>
-          {errors.password && (
-            <p className="text-red-500 text-xs mt-1">{errors.password}</p>
-          )}
+          <div className={`h-[1px] w-full ${errors.password ? "bg-red-500" : "bg-[#000]"} mt-[4px]`} />
+          {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
 
-          {/* Confirm Password Text box and underline */}
           <div className="mt-[36px] relative">
             <input
               type={confirmPasswordVisible ? "text" : "password"}
@@ -295,80 +158,40 @@ const SignUp = () => {
               value={formData.confirmPassword}
               onChange={handleInputChange}
               placeholder="Confirm Password"
-              className={`w-full text-[14px] font-PlusSans placeholder:text-[#646464] text-black leading-[24px] font-normal focus:outline-none ${errors.confirmPassword ? "text-red-500" : ""
-                }`}
+              className={`w-full text-[14px] font-PlusSans placeholder:text-[#646464] text-black leading-[24px] font-normal focus:outline-none ${errors.confirmPassword ? "text-red-500" : ""}`}
             />
             <div
               className="absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer"
-              onClick={toggleConfirmPasswordVisibility}
+              onClick={() => setConfirmPasswordVisible(!confirmPasswordVisible)}
             >
               {confirmPasswordVisible ? (
-                <IoEyeOutline
-                  size={20}
-                  color={errors.confirmPassword ? "#ef4444" : "#646464"}
-                />
+                <IoEyeOutline size={20} color={errors.confirmPassword ? "#ef4444" : "#646464"} />
               ) : (
-                <IoEyeOffOutline
-                  size={20}
-                  color={errors.confirmPassword ? "#ef4444" : "#646464"}
-                />
+                <IoEyeOffOutline size={20} color={errors.confirmPassword ? "#ef4444" : "#646464"} />
               )}
             </div>
           </div>
-          <div
-            className={`h-[1px] w-full ${errors.confirmPassword ? "bg-red-500" : "bg-[#000]"
-              } mt-[4px]`}
-          ></div>
-          {errors.confirmPassword && (
-            <p className="text-red-500 text-xs mt-1">
-              {errors.confirmPassword}
-            </p>
-          )}
+          <div className={`h-[1px] w-full ${errors.confirmPassword ? "bg-red-500" : "bg-[#000]"} mt-[4px]`} />
+          {errors.confirmPassword && <p className="text-red-500 text-xs mt-1">{errors.confirmPassword}</p>}
 
-          {/* Sign up Button */}
           <div className="font-PlusSans mt-[24px] lg:mt-[32px] w-full">
             <CustomButton
-              title={isLoading ? "Signing Up..." : "Sign Up"}
+              title={registerMutation.isPending ? "Creating Account..." : "Sign Up"}
               onClick={handleFormSubmit}
-              disabled={isLoading}
-              icon={
-                isLoading ? (
-                  <svg
-                    className="animate-spin h-5 w-5 mr-3"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                      fill="none"
-                    />
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    />
-                  </svg>
-                ) : null
-              }
-              iconPosition="left"
+              disabled={registerMutation.isPending}
             />
           </div>
           <div className="font-PlusSans text-xs leading-6 text-[#646464] w-full mt-3">
-            This site is protected by recaptcha and the Google Privacy Policy
-            and Terms of Service apply.
+            This site is protected by recaptcha and the Google Privacy Policy and Terms of Service apply.
           </div>
-          <h1 className="flex items-center justify-center mt-[12px] font-PlusSans text-[#646464] text-sm leading-6 ">
+          <h1 className="flex items-center justify-center mt-[12px] font-PlusSans text-[#646464] text-sm leading-6">
             If you have an account?{" "}
-            <span
+            <Link
+              to="/signin"
               className="text-brand-navy font-semibold hover:text-[#000] ml-2.5 hover:underline cursor-pointer"
-              onClick={() => navigate("/signin")}
             >
               Sign In
-            </span>
+            </Link>
           </h1>
         </div>
         <div className="flex justify-center items-center text-xs text-black leading-6 mt-auto font-PlusSans lg:py-7 py-3">
