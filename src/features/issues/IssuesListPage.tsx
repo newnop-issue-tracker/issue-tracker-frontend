@@ -82,6 +82,7 @@ export function IssuesListPage({ onCreate }: IssuesListPageProps) {
   const [severityFilter, setSeverityFilter] = useState<SeverityKey[]>([]);
   const [sort, setSort] = useState<'updatedAt' | 'createdAt' | 'priority' | 'status'>('updatedAt');
   const [page, setPage] = useState(1);
+  const [filtersOpen, setFiltersOpen] = useState(false);
 
   const debouncedSearch = useDebounce(search, 400);
 
@@ -127,8 +128,12 @@ export function IssuesListPage({ onCreate }: IssuesListPageProps) {
     severityFilter.length > 0 ||
     search.length > 0;
 
+  const activeFilterCount =
+    statusFilter.length + priorityFilter.length + severityFilter.length;
+
   return (
     <div className="main-wrap">
+      {/* Page header */}
       <div className="page-header">
         <div>
           <h1 className="page-title">Issues</h1>
@@ -147,8 +152,59 @@ export function IssuesListPage({ onCreate }: IssuesListPageProps) {
         </Button>
       </div>
 
-      <div className="list-layout">
-        <div className="card filter-panel">
+      {/* Toolbar — always above the grid, full width */}
+      <div className="issues-toolbar">
+        <div style={{ position: 'relative', flex: 1 }}>
+          <input
+            className="input"
+            placeholder="Search by title or description…"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            style={{ paddingLeft: 36, fontSize: 14 }}
+          />
+          <Icon.Search
+            size={15}
+            style={{
+              position: 'absolute',
+              left: 11,
+              top: '50%',
+              transform: 'translateY(-50%)',
+              color: 'var(--fg-subtle)',
+              pointerEvents: 'none',
+            }}
+          />
+        </div>
+        <select
+          className="input select issues-sort"
+          value={sort}
+          onChange={(e) => setSort(e.target.value as typeof sort)}
+        >
+          <option value="updatedAt">Last updated</option>
+          <option value="createdAt">Newest</option>
+          <option value="priority">Priority</option>
+          <option value="status">Status</option>
+        </select>
+        {/* Mobile filter toggle */}
+        <button
+          className="filter-toggle-btn"
+          onClick={() => setFiltersOpen((o) => !o)}
+        >
+          <Icon.Filter size={15} />
+          Filters
+          {activeFilterCount > 0 && (
+            <span className="filter-toggle-badge">{activeFilterCount}</span>
+          )}
+        </button>
+        {hasFilters && (
+          <button className="clear-filters-btn" onClick={clearAll}>
+            Clear
+          </button>
+        )}
+      </div>
+
+      {/* Mobile filter drawer */}
+      {filtersOpen && (
+        <div className="card mobile-filter-drawer">
           <FilterSection<StatusKey>
             title="Status"
             selected={statusFilter}
@@ -159,7 +215,50 @@ export function IssuesListPage({ onCreate }: IssuesListPageProps) {
                 s === 'progress'
                   ? 'In Progress'
                   : s.charAt(0).toUpperCase() + s.slice(1),
-              icon: <StatusIcon status={s} size={12} />,
+              icon: <StatusIcon status={s} size={13} />,
+            }))}
+          />
+          <FilterSection<PriorityKey>
+            title="Priority"
+            selected={priorityFilter}
+            onChange={setPriorityFilter}
+            options={PRIORITY_OPTIONS.map((p) => ({
+              value: p,
+              label: p.charAt(0).toUpperCase() + p.slice(1),
+            }))}
+          />
+          <FilterSection<SeverityKey>
+            title="Severity"
+            selected={severityFilter}
+            onChange={setSeverityFilter}
+            options={SEVERITY_OPTIONS.map((s) => ({
+              value: s,
+              label: s.charAt(0).toUpperCase() + s.slice(1),
+            }))}
+          />
+          {hasFilters && (
+            <Button variant="ghost" size="sm" onClick={clearAll} style={{ marginTop: 12, width: '100%' }}>
+              Clear all filters
+            </Button>
+          )}
+        </div>
+      )}
+
+      {/* Main layout */}
+      <div className="list-layout">
+        {/* Desktop filter sidebar */}
+        <div className="card filter-panel desktop-only-filter">
+          <FilterSection<StatusKey>
+            title="Status"
+            selected={statusFilter}
+            onChange={setStatusFilter}
+            options={STATUS_OPTIONS.map((s) => ({
+              value: s,
+              label:
+                s === 'progress'
+                  ? 'In Progress'
+                  : s.charAt(0).toUpperCase() + s.slice(1),
+              icon: <StatusIcon status={s} size={13} />,
             }))}
           />
           <FilterSection<PriorityKey>
@@ -192,49 +291,18 @@ export function IssuesListPage({ onCreate }: IssuesListPageProps) {
           )}
         </div>
 
+        {/* Issues list */}
         <div>
-          <div className="toolbar">
-            <div style={{ position: 'relative', flex: 1, maxWidth: 360 }}>
-              <input
-                className="input"
-                placeholder="Search by title or description…"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                style={{ paddingLeft: 32 }}
-              />
-              <Icon.Search
-                style={{
-                  position: 'absolute',
-                  left: 10,
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  color: 'var(--fg-subtle)',
-                }}
-              />
-            </div>
-            <select
-              className="input select"
-              value={sort}
-              onChange={(e) => setSort(e.target.value as typeof sort)}
-              style={{ width: 200 }}
-            >
-              <option value="updatedAt">Sort: Last updated</option>
-              <option value="createdAt">Sort: Newest</option>
-              <option value="priority">Sort: Priority</option>
-              <option value="status">Sort: Status</option>
-            </select>
-          </div>
-
           <div className="card" style={{ overflow: 'hidden' }}>
             {query.isLoading ? (
               <IssuesListSkeleton />
             ) : query.isError ? (
               <div className="empty">
-                <Icon.AlertTri size={36} />
-                <div className="empty-title" style={{ marginTop: 8 }}>
+                <Icon.AlertTri size={40} />
+                <div className="empty-title" style={{ marginTop: 10 }}>
                   Couldn't load issues
                 </div>
-                <p style={{ maxWidth: 320, margin: '4px auto 16px', fontSize: 13 }}>
+                <p style={{ maxWidth: 340, margin: '6px auto 18px', fontSize: 14 }}>
                   Something went wrong fetching the list. Try again in a moment.
                 </p>
                 <Button variant="secondary" size="sm" onClick={() => query.refetch()}>
@@ -243,11 +311,11 @@ export function IssuesListPage({ onCreate }: IssuesListPageProps) {
               </div>
             ) : issues.length === 0 ? (
               <div className="empty">
-                <Icon.Inbox size={44} sw={1.2} />
-                <div className="empty-title" style={{ marginTop: 10 }}>
+                <Icon.Inbox size={48} sw={1.2} />
+                <div className="empty-title" style={{ marginTop: 12 }}>
                   No issues match these filters
                 </div>
-                <p style={{ maxWidth: 320, margin: '4px auto 16px', fontSize: 13 }}>
+                <p style={{ maxWidth: 340, margin: '6px auto 18px', fontSize: 14 }}>
                   Try loosening filters, or create a new issue to get started.
                 </p>
                 {hasFilters ? (
@@ -262,61 +330,65 @@ export function IssuesListPage({ onCreate }: IssuesListPageProps) {
               </div>
             ) : (
               <>
-                <table className="table">
-                  <thead>
-                    <tr>
-                      <th style={{ width: 28 }}></th>
-                      <th style={{ width: 80 }}>ID</th>
-                      <th>Title</th>
-                      <th style={{ width: 100 }}>Status</th>
-                      <th style={{ width: 90 }}>Priority</th>
-                      <th style={{ width: 50 }}>Author</th>
-                      <th style={{ width: 90 }}>Updated</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {issues.map((i) => (
-                      <tr
-                        key={i.id}
-                        onClick={() => navigate(`/issues/${i.id}`)}
-                      >
-                        <td>
-                          <StatusIcon status={statusApiToUi[i.status]} />
-                        </td>
-                        <td className="mono text-xs text-subtle">
-                          {i.id.slice(0, 8)}
-                        </td>
-                        <td>
-                          <div className="row gap-2">
+                <div style={{ overflowX: 'auto' }}>
+                  <table className="table" style={{ minWidth: 560 }}>
+                    <thead>
+                      <tr>
+                        <th style={{ width: 32 }}></th>
+                        <th style={{ width: 90 }}>ID</th>
+                        <th>Title</th>
+                        <th style={{ width: 110 }}>Status</th>
+                        <th style={{ width: 100 }}>Priority</th>
+                        <th style={{ width: 52 }}>Author</th>
+                        <th style={{ width: 95 }}>Updated</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {issues.map((i) => (
+                        <tr
+                          key={i.id}
+                          onClick={() => navigate(`/issues/${i.id}`)}
+                        >
+                          <td>
+                            <StatusIcon status={statusApiToUi[i.status]} size={15} />
+                          </td>
+                          <td className="mono text-subtle" style={{ fontSize: 12 }}>
+                            {i.id.slice(0, 8)}
+                          </td>
+                          <td>
                             <span
-                              className="truncate"
-                              style={{ maxWidth: 460, fontWeight: 500 }}
+                              style={{
+                                maxWidth: 440,
+                                fontWeight: 500,
+                                display: 'block',
+                                overflow: 'hidden',
+                                whiteSpace: 'nowrap',
+                                textOverflow: 'ellipsis',
+                                fontSize: 14,
+                              }}
                             >
                               {truncate(i.title, 90)}
                             </span>
-                          </div>
-                        </td>
-                        <td>
-                          <StatusBadge status={statusApiToUi[i.status]} />
-                        </td>
-                        <td>
-                          <PriorityBadge priority={priorityApiToUi[i.priority]} />
-                        </td>
-                        <td>
-                          <Avatar user={i.author} />
-                        </td>
-                        <td
-                          className="text-xs text-subtle mono"
-                          style={{ whiteSpace: 'nowrap' }}
-                        >
-                          {timeAgo(i.updatedAt)}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                          </td>
+                          <td>
+                            <StatusBadge status={statusApiToUi[i.status]} />
+                          </td>
+                          <td>
+                            <PriorityBadge priority={priorityApiToUi[i.priority]} />
+                          </td>
+                          <td>
+                            <Avatar user={i.author} />
+                          </td>
+                          <td className="text-subtle mono" style={{ whiteSpace: 'nowrap', fontSize: 12 }}>
+                            {timeAgo(i.updatedAt)}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
                 <div className="pagination">
-                  <span>
+                  <span style={{ fontSize: 13 }}>
                     Showing <b>{(page - 1) * 10 + 1}</b>–
                     <b>{Math.min(page * 10, total)}</b> of <b>{total}</b>
                   </span>

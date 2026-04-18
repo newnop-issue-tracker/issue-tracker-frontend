@@ -66,27 +66,28 @@ export function DashboardPage({ onCreate }: DashboardPageProps) {
   return (
     <div className="main-wrap">
       {/* Header */}
-      <div style={{ marginBottom: 20 }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <div style={{ marginBottom: 24 }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
           <div>
             <h1
               style={{
-                fontSize: 20,
+                fontSize: 24,
                 fontWeight: 700,
                 letterSpacing: '-0.02em',
                 margin: 0,
                 color: 'var(--fg)',
                 fontFamily: 'var(--font-heading)',
+                lineHeight: 1.2,
               }}
             >
               {greeting},{' '}
               <span style={{ color: 'var(--accent)' }}>{firstName}</span>
             </h1>
-            <p style={{ color: 'var(--fg-muted)', fontSize: 12, marginTop: 3, fontFamily: 'var(--font-sans)' }}>
+            <p style={{ color: 'var(--fg-muted)', fontSize: 14, marginTop: 4, fontFamily: 'var(--font-sans)' }}>
               Here's what's happening across the project today.
             </p>
           </div>
-          <Button variant="primary" size="sm" onClick={onCreate} icon={<Icon.Plus size={13} />}>
+          <Button variant="primary" size="sm" onClick={onCreate} icon={<Icon.Plus size={14} />}>
             New issue
           </Button>
         </div>
@@ -99,7 +100,7 @@ export function DashboardPage({ onCreate }: DashboardPageProps) {
           count={statData?.OPEN ?? 0}
           trend="active issues"
           loading={stats.isLoading}
-          icon={<Icon.Inbox size={13} />}
+          icon={<Icon.Inbox size={15} />}
           accent={{ bg: '#EFF4FF', fg: '#2563EB', bar: '#2563EB' }}
         />
         <StatCard
@@ -107,7 +108,7 @@ export function DashboardPage({ onCreate }: DashboardPageProps) {
           count={statData?.IN_PROGRESS ?? 0}
           trend="being worked on"
           loading={stats.isLoading}
-          icon={<Icon.Bolt size={13} />}
+          icon={<Icon.Bolt size={15} />}
           accent={{ bg: '#FEF5E7', fg: '#B45309', bar: '#F59E0B' }}
         />
         <StatCard
@@ -115,7 +116,7 @@ export function DashboardPage({ onCreate }: DashboardPageProps) {
           count={statData?.RESOLVED ?? 0}
           trend="completed"
           loading={stats.isLoading}
-          icon={<Icon.CheckCircle size={13} />}
+          icon={<Icon.CheckCircle size={15} />}
           accent={{ bg: '#ECFDF3', fg: '#15803D', bar: '#22C55E' }}
         />
         <StatCard
@@ -123,13 +124,13 @@ export function DashboardPage({ onCreate }: DashboardPageProps) {
           count={statData?.total ?? 0}
           trend="all time"
           loading={stats.isLoading}
-          icon={<Icon.Hash size={13} />}
+          icon={<Icon.Hash size={15} />}
           accent={{ bg: 'var(--bg-muted)', fg: 'var(--fg-muted)', bar: 'var(--border-strong)' }}
         />
       </div>
 
       {/* Main Grid */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 300px', gap: 16 }}>
+      <div className="dashboard-grid">
 
         {/* Recent Activity */}
         <div>
@@ -138,21 +139,21 @@ export function DashboardPage({ onCreate }: DashboardPageProps) {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
-              marginBottom: 10,
+              marginBottom: 12,
             }}
           >
             <div
               style={{
-                fontSize: 13,
+                fontSize: 15,
                 fontWeight: 700,
                 color: 'var(--fg)',
                 fontFamily: 'var(--font-heading)',
                 display: 'flex',
                 alignItems: 'center',
-                gap: 6,
+                gap: 7,
               }}
             >
-              <Icon.Clock size={14} style={{ color: 'var(--fg-muted)' }} />
+              <Icon.Clock size={16} style={{ color: 'var(--fg-muted)' }} />
               Recent activity
             </div>
             <button
@@ -161,68 +162,68 @@ export function DashboardPage({ onCreate }: DashboardPageProps) {
                 background: 'none',
                 border: 'none',
                 cursor: 'pointer',
-                fontSize: 12,
+                fontSize: 13,
                 color: 'var(--accent)',
                 fontFamily: 'var(--font-heading)',
                 fontWeight: 600,
-                padding: '2px 6px',
+                padding: '3px 8px',
                 borderRadius: 6,
                 display: 'flex',
                 alignItems: 'center',
-                gap: 3,
+                gap: 4,
               }}
             >
-              View all <Icon.ChevRight size={12} />
+              View all <Icon.ChevRight size={13} />
             </button>
           </div>
 
           <div className="card" style={{ overflow: 'hidden' }}>
             {recent.isLoading ? (
-              <div style={{ padding: '32px 20px', textAlign: 'center', color: 'var(--fg-subtle)', fontSize: 12 }}>
+              <div style={{ padding: '40px 24px', textAlign: 'center', color: 'var(--fg-subtle)', fontSize: 14 }}>
                 Loading…
               </div>
             ) : (recent.data?.data ?? []).length === 0 ? (
-              <div className="empty" style={{ padding: '48px 24px' }}>
-                <Icon.Inbox size={32} style={{ color: 'var(--fg-subtle)', margin: '0 auto 10px' }} />
-                <div className="empty-title" style={{ fontSize: 13 }}>No issues yet</div>
-                <p style={{ fontSize: 12, color: 'var(--fg-muted)', marginTop: 4 }}>
+              <div className="empty" style={{ padding: '56px 28px' }}>
+                <Icon.Inbox size={36} style={{ color: 'var(--fg-subtle)', margin: '0 auto 12px' }} />
+                <div className="empty-title" style={{ fontSize: 15 }}>No issues yet</div>
+                <p style={{ fontSize: 13, color: 'var(--fg-muted)', marginTop: 6 }}>
                   Create your first issue to get started
                 </p>
-                <Button variant="primary" size="sm" onClick={onCreate} style={{ marginTop: 14 }}>
+                <Button variant="primary" size="sm" onClick={onCreate} style={{ marginTop: 16 }}>
                   Create the first one
                 </Button>
               </div>
             ) : (
-              <table className="table" style={{ fontSize: 12 }}>
+              <table className="table" style={{ fontSize: 13 }}>
                 <thead>
                   <tr>
-                    <th style={{ width: 24 }}></th>
-                    <th style={{ width: 70 }}>ID</th>
+                    <th style={{ width: 28 }}></th>
+                    <th style={{ width: 80 }}>ID</th>
                     <th>Title</th>
-                    <th style={{ width: 85 }}>Priority</th>
-                    <th style={{ width: 32 }}>By</th>
-                    <th style={{ width: 72 }}>Updated</th>
+                    <th style={{ width: 95 }}>Priority</th>
+                    <th style={{ width: 36 }}>By</th>
+                    <th style={{ width: 80 }}>Updated</th>
                   </tr>
                 </thead>
                 <tbody>
                   {(recent.data?.data ?? []).map((issue) => (
                     <tr key={issue.id} onClick={() => navigate(`/issues/${issue.id}`)}>
                       <td>
-                        <StatusIcon status={statusApiToUi[issue.status]} size={13} />
+                        <StatusIcon status={statusApiToUi[issue.status]} size={14} />
                       </td>
-                      <td className="mono text-xs text-subtle" style={{ fontSize: 11 }}>
+                      <td className="mono text-subtle" style={{ fontSize: 12 }}>
                         {issue.id.slice(0, 7)}
                       </td>
                       <td>
                         <span
                           style={{
-                            maxWidth: 280,
+                            maxWidth: 300,
                             fontWeight: 500,
                             display: 'block',
                             overflow: 'hidden',
                             whiteSpace: 'nowrap',
                             textOverflow: 'ellipsis',
-                            fontSize: 12,
+                            fontSize: 13,
                           }}
                         >
                           {truncate(issue.title, 55)}
@@ -234,7 +235,7 @@ export function DashboardPage({ onCreate }: DashboardPageProps) {
                       <td>
                         <Avatar user={issue.author} />
                       </td>
-                      <td className="text-xs text-subtle mono" style={{ fontSize: 11 }}>
+                      <td className="text-subtle mono" style={{ fontSize: 12 }}>
                         {timeAgo(issue.updatedAt)}
                       </td>
                     </tr>
@@ -246,36 +247,36 @@ export function DashboardPage({ onCreate }: DashboardPageProps) {
         </div>
 
         {/* Sidebar */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
 
           {/* Quick Actions */}
-          <div className="card" style={{ padding: '14px 16px' }}>
+          <div className="card" style={{ padding: '16px 18px' }}>
             <div
               style={{
-                fontSize: 11,
+                fontSize: 12,
                 fontWeight: 700,
                 color: 'var(--fg-muted)',
                 textTransform: 'uppercase',
                 letterSpacing: '0.06em',
-                marginBottom: 10,
+                marginBottom: 12,
                 fontFamily: 'var(--font-heading)',
               }}
             >
               Quick Actions
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
               <button
                 onClick={onCreate}
                 style={{
                   display: 'flex',
                   alignItems: 'center',
-                  gap: 8,
-                  padding: '8px 10px',
+                  gap: 9,
+                  padding: '10px 12px',
                   border: '1px solid var(--border)',
-                  borderRadius: 8,
+                  borderRadius: 9,
                   background: 'var(--bg-subtle)',
                   cursor: 'pointer',
-                  fontSize: 12,
+                  fontSize: 13,
                   fontFamily: 'var(--font-heading)',
                   fontWeight: 600,
                   color: 'var(--fg)',
@@ -294,22 +295,22 @@ export function DashboardPage({ onCreate }: DashboardPageProps) {
                   (e.currentTarget as HTMLElement).style.borderColor = 'var(--border)';
                 }}
               >
-                <Icon.Plus size={13} />
+                <Icon.Plus size={14} />
                 Create new issue
-                <span style={{ marginLeft: 'auto', fontSize: 10, opacity: 0.5, fontFamily: 'var(--font-mono)' }}>C</span>
+                <span style={{ marginLeft: 'auto', fontSize: 11, opacity: 0.5, fontFamily: 'var(--font-mono)' }}>C</span>
               </button>
               <button
                 onClick={() => navigate('/issues')}
                 style={{
                   display: 'flex',
                   alignItems: 'center',
-                  gap: 8,
-                  padding: '8px 10px',
+                  gap: 9,
+                  padding: '10px 12px',
                   border: '1px solid var(--border)',
-                  borderRadius: 8,
+                  borderRadius: 9,
                   background: 'transparent',
                   cursor: 'pointer',
-                  fontSize: 12,
+                  fontSize: 13,
                   fontFamily: 'var(--font-heading)',
                   fontWeight: 500,
                   color: 'var(--fg-muted)',
@@ -326,22 +327,22 @@ export function DashboardPage({ onCreate }: DashboardPageProps) {
                   (e.currentTarget as HTMLElement).style.color = 'var(--fg-muted)';
                 }}
               >
-                <Icon.Filter size={13} />
+                <Icon.Filter size={14} />
                 Browse all issues
               </button>
             </div>
           </div>
 
           {/* My Open Issues */}
-          <div className="card" style={{ padding: '14px 16px', flex: 1 }}>
+          <div className="card" style={{ padding: '16px 18px', flex: 1 }}>
             <div
               style={{
-                fontSize: 11,
+                fontSize: 12,
                 fontWeight: 700,
                 color: 'var(--fg-muted)',
                 textTransform: 'uppercase',
                 letterSpacing: '0.06em',
-                marginBottom: 10,
+                marginBottom: 12,
                 fontFamily: 'var(--font-heading)',
                 display: 'flex',
                 alignItems: 'center',
@@ -355,8 +356,8 @@ export function DashboardPage({ onCreate }: DashboardPageProps) {
                     background: 'var(--status-open-bg)',
                     color: 'var(--status-open)',
                     borderRadius: 999,
-                    padding: '1px 7px',
-                    fontSize: 10,
+                    padding: '2px 8px',
+                    fontSize: 11,
                     fontWeight: 700,
                   }}
                 >
@@ -366,24 +367,24 @@ export function DashboardPage({ onCreate }: DashboardPageProps) {
             </div>
 
             {mine.isLoading ? (
-              <div style={{ fontSize: 12, color: 'var(--fg-subtle)', padding: '8px 0' }}>Loading…</div>
+              <div style={{ fontSize: 13, color: 'var(--fg-subtle)', padding: '10px 0' }}>Loading…</div>
             ) : myOpenIssues.length === 0 ? (
-              <div style={{ textAlign: 'center', padding: '20px 0' }}>
-                <Icon.CheckCircle size={24} style={{ color: '#22C55E', margin: '0 auto 6px' }} />
-                <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--fg)', fontFamily: 'var(--font-heading)' }}>
+              <div style={{ textAlign: 'center', padding: '24px 0' }}>
+                <Icon.CheckCircle size={28} style={{ color: '#22C55E', margin: '0 auto 8px' }} />
+                <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--fg)', fontFamily: 'var(--font-heading)' }}>
                   All clear!
                 </div>
-                <div style={{ fontSize: 11, color: 'var(--fg-muted)', marginTop: 2 }}>No open issues assigned</div>
+                <div style={{ fontSize: 12, color: 'var(--fg-muted)', marginTop: 3 }}>No open issues assigned</div>
               </div>
             ) : (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                 {myOpenIssues.map((issue) => (
                   <div
                     key={issue.id}
                     onClick={() => navigate(`/issues/${issue.id}`)}
                     style={{
-                      padding: '8px 10px',
-                      borderRadius: 8,
+                      padding: '10px 12px',
+                      borderRadius: 9,
                       border: '1px solid var(--border)',
                       cursor: 'pointer',
                       transition: 'all .12s',
@@ -398,19 +399,19 @@ export function DashboardPage({ onCreate }: DashboardPageProps) {
                       (e.currentTarget as HTMLElement).style.background = 'var(--bg-subtle)';
                     }}
                   >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginBottom: 4 }}>
-                      <StatusIcon status={statusApiToUi[issue.status]} size={11} />
-                      <span className="mono" style={{ fontSize: 10, color: 'var(--fg-subtle)' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 5 }}>
+                      <StatusIcon status={statusApiToUi[issue.status]} size={13} />
+                      <span className="mono" style={{ fontSize: 11, color: 'var(--fg-subtle)' }}>
                         {issue.id.slice(0, 7)}
                       </span>
                       <PriorityBadge priority={priorityApiToUi[issue.priority]} />
                     </div>
                     <div
                       style={{
-                        fontSize: 12,
+                        fontSize: 13,
                         fontWeight: 500,
                         color: 'var(--fg)',
-                        lineHeight: 1.35,
+                        lineHeight: 1.4,
                         overflow: 'hidden',
                         display: '-webkit-box',
                         WebkitLineClamp: 2,
@@ -419,7 +420,7 @@ export function DashboardPage({ onCreate }: DashboardPageProps) {
                     >
                       {issue.title}
                     </div>
-                    <div style={{ fontSize: 10.5, color: 'var(--fg-subtle)', marginTop: 4, fontFamily: 'var(--font-mono)' }}>
+                    <div style={{ fontSize: 11.5, color: 'var(--fg-subtle)', marginTop: 5, fontFamily: 'var(--font-mono)' }}>
                       {timeAgo(issue.updatedAt)}
                     </div>
                   </div>
