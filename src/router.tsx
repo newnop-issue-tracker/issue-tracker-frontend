@@ -33,7 +33,7 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    element: <RedirectIfAuth />,
+    element: <RequireAuth />,
     children: [
       {
         element: <AppShell />,

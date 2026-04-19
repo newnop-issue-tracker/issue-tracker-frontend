@@ -70,7 +70,7 @@ function NavComponent() {
           {user ? (
             <>
               <span className="text-sm text-brand-charcoal font-Mainfront">
-                Hi, {user.name.split(" ")[0]}
+                Hi, {user.name?.split(" ")[0] ?? "User"}
               </span>
               <CustomButton
                 title="Dashboard"
