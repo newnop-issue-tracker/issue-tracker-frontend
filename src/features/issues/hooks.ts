@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { issuesApi, type CreateIssuePayload, type ListIssuesParams, type UpdateIssuePayload } from '@/api/issues.api';
 import { commentsApi, type CreateCommentPayload } from '@/api/comments.api';
+import { usersApi } from '@/api/users.api';
 import { getErrorMessage } from '@/api/client';
 import { QUERY_KEYS } from '@/lib/constants';
 
@@ -95,6 +96,14 @@ export function useCreateComment(issueId: string) {
     onError: (err) => {
       toast.error('Failed to post comment', { description: getErrorMessage(err) });
     },
+  });
+}
+
+export function useUsers() {
+  return useQuery({
+    queryKey: ['users'],
+    queryFn: () => usersApi.list(),
+    staleTime: 5 * 60_000,
   });
 }
 

@@ -24,7 +24,9 @@ export interface Issue {
   createdAt: string;
   updatedAt: string;
   authorId: string;
+  assigneeId: string | null;
   author: Author;
+  assignee: Author | null;
   resolvedBy: Author | null;
   updatedBy: Author | null;
 }

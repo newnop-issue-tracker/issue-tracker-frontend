@@ -36,5 +36,6 @@ export const issueSchema = z.object({
   priority: z.enum(['LOW', 'MEDIUM', 'HIGH', 'URGENT']),
   severity: z.enum(['TRIVIAL', 'MINOR', 'MAJOR', 'CRITICAL']),
   status: z.enum(['OPEN', 'IN_PROGRESS', 'RESOLVED', 'CLOSED']).optional(),
+  assigneeId: z.string().uuid().nullable().optional(),
 });
 export type IssueFormValues = z.infer<typeof issueSchema>;

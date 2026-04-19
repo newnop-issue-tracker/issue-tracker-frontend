@@ -48,7 +48,7 @@ export function DashboardPage({ onCreate }: DashboardPageProps) {
 
   const stats = useIssueStats(false);
   const recent = useIssues({ page: 1, limit: 6, sortBy: 'updatedAt', sortOrder: 'desc' });
-  const mine = useIssues({ page: 1, limit: 6, sortBy: 'updatedAt', sortOrder: 'desc' });
+  const mine = useIssues({ page: 1, limit: 10, sortBy: 'updatedAt', sortOrder: 'desc', status: 'OPEN', assignedToMe: true });
 
   const greeting = useMemo(() => {
     const h = new Date().getHours();
@@ -59,9 +59,7 @@ export function DashboardPage({ onCreate }: DashboardPageProps) {
   const firstName = user?.name.split(' ')[0] ?? 'there';
   const statData = stats.data;
 
-  const myOpenIssues = (mine.data?.data ?? []).filter(
-    (i) => i.authorId === user?.id && i.status === 'OPEN',
-  );
+  const myOpenIssues = mine.data?.data ?? [];
 
   return (
     <div className="main-wrap">

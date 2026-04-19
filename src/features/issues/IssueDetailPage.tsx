@@ -4,7 +4,7 @@ import { Avatar } from '@/components/UI/Avatar';
 import { Button } from '@/components/UI/Button';
 import { Icon } from '@/components/UI/Icon';
 import { PriorityBadge, StatusBadge } from '@/components/UI/Badge';
-import { useDeleteIssue, useIssue, useUpdateIssue } from '@/features/issues/hooks';
+import { useDeleteIssue, useIssue, useUpdateIssue, useUsers } from '@/features/issues/hooks';
 import { useAuthStore } from '@/store/authStore';
 import { useTicker } from '@/hooks/useTicker';
 import { renderMarkdown } from '@/lib/markdown';
@@ -31,6 +31,7 @@ export function IssueDetailPage() {
   const { data: issue, isLoading, isError } = useIssue(id);
   const updateMutation = useUpdateIssue();
   const deleteMutation = useDeleteIssue();
+  const { data: users = [] } = useUsers();
 
   const [editOpen, setEditOpen] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
@@ -188,6 +189,34 @@ export function IssueDetailPage() {
             </MetaRow>
             <MetaRow label="Severity">
               <span className="badge-neutral">{SEVERITY_META[severity]}</span>
+            </MetaRow>
+            <MetaRow label="Assignee">
+              {isAuthor ? (
+                <select
+                  className="input select"
+                  value={issue.assigneeId ?? ''}
+                  disabled={updateMutation.isPending}
+                  onChange={(e) =>
+                    updateMutation.mutate({
+                      id: issue.id,
+                      payload: { assigneeId: e.target.value || null },
+                    })
+                  }
+                  style={{ fontSize: 12, padding: '2px 6px', height: 'auto' }}
+                >
+                  <option value="">Unassigned</option>
+                  {users.map((u) => (
+                    <option key={u.id} value={u.id}>{u.name}</option>
+                  ))}
+                </select>
+              ) : issue.assignee ? (
+                <div className="row gap-2">
+                  <Avatar user={issue.assignee} />
+                  <span className="text-sm">{issue.assignee.name}</span>
+                </div>
+              ) : (
+                <span className="text-sm text-subtle">Unassigned</span>
+              )}
             </MetaRow>
             <MetaRow label="Author">
               <div className="row gap-2">

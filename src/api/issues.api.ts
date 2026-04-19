@@ -18,6 +18,7 @@ export interface ListIssuesParams {
   severity?: Severity;
   sortBy?: 'createdAt' | 'updatedAt' | 'priority' | 'status';
   sortOrder?: 'asc' | 'desc';
+  assignedToMe?: boolean;
 }
 
 export interface CreateIssuePayload {
@@ -26,6 +27,7 @@ export interface CreateIssuePayload {
   priority?: Priority;
   severity?: Severity;
   status?: Status;
+  assigneeId?: string | null;
 }
 
 export type UpdateIssuePayload = Partial<CreateIssuePayload>;

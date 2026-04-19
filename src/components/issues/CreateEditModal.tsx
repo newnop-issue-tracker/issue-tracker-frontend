@@ -6,7 +6,7 @@ import { Icon } from '@/components/UI/Icon';
 import { PriorityBadge } from '@/components/UI/Badge';
 import { issueSchema, type IssueFormValues } from '@/lib/schemas';
 import { SEVERITY_META } from '@/lib/constants';
-import { useCreateIssue, useUpdateIssue } from '@/features/issues/hooks';
+import { useCreateIssue, useUpdateIssue, useUsers } from '@/features/issues/hooks';
 import {
   priorityApiToUi,
   severityApiToUi,
@@ -22,6 +22,7 @@ export function CreateEditModal({ issue, onClose }: CreateEditModalProps) {
   const isEdit = !!issue;
   const createMutation = useCreateIssue();
   const updateMutation = useUpdateIssue();
+  const { data: users = [] } = useUsers();
 
   const {
     register,
@@ -35,6 +36,7 @@ export function CreateEditModal({ issue, onClose }: CreateEditModalProps) {
       description: issue?.description ?? '',
       priority: issue?.priority ?? 'MEDIUM',
       severity: issue?.severity ?? 'MINOR',
+      assigneeId: issue?.assigneeId ?? null,
     },
   });
 
@@ -131,6 +133,25 @@ export function CreateEditModal({ issue, onClose }: CreateEditModalProps) {
                 <option value="CRITICAL">Critical</option>
               </select>
             </div>
+          </div>
+
+          <div>
+            <label className="label">Assignee <span className="text-subtle">· optional</span></label>
+            <select
+              className="input select"
+              {...register('assigneeId')}
+              onChange={(e) => {
+                const val = e.target.value;
+                register('assigneeId').onChange({
+                  target: { value: val === '' ? null : val, name: 'assigneeId' },
+                });
+              }}
+            >
+              <option value="">Unassigned</option>
+              {users.map((u) => (
+                <option key={u.id} value={u.id}>{u.name}</option>
+              ))}
+            </select>
           </div>
 
           <div className="row gap-2" style={{ marginTop: 4 }}>
