@@ -2,10 +2,10 @@ import axios, {
   type AxiosError,
   type AxiosInstance,
   type InternalAxiosRequestConfig,
-} from 'axios';
-import type { AuthResponse, ApiError } from '@/types/api';
+} from "axios";
+import type { AuthResponse, ApiError } from "@/types/api";
 
-const API_URL = import.meta.env.VITE_API_URL || '';
+const API_URL = import.meta.env.VITE_API_URL || "";
 
 let accessToken: string | null = null;
 export const getAccessToken = () => accessToken;
@@ -65,9 +65,9 @@ api.interceptors.response.use(
     }
 
     if (
-      original.url?.includes('/api/auth/login') ||
-      original.url?.includes('/api/auth/register') ||
-      original.url?.includes('/api/auth/refresh')
+      original.url?.includes("/api/auth/login") ||
+      original.url?.includes("/api/auth/register") ||
+      original.url?.includes("/api/auth/refresh")
     ) {
       return Promise.reject(error);
     }
@@ -90,8 +90,20 @@ api.interceptors.response.use(
 
 export function getErrorMessage(err: unknown): string {
   if (axios.isAxiosError<ApiError>(err)) {
-    return err.response?.data?.error ?? err.message ?? 'Something went wrong';
+    const apiError = err.response?.data;
+
+    if (apiError?.details?.length) {
+      const detailMessages = apiError.details
+        .map((d) => d.message?.trim())
+        .filter((message): message is string => Boolean(message));
+
+      if (detailMessages.length) {
+        return detailMessages.join(" | ");
+      }
+    }
+
+    return apiError?.error ?? err.message ?? "Something went wrong";
   }
   if (err instanceof Error) return err.message;
-  return 'Something went wrong';
+  return "Something went wrong";
 }
