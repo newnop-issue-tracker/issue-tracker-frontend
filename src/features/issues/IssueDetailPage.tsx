@@ -32,7 +32,6 @@ export function IssueDetailPage() {
   const deleteMutation = useDeleteIssue();
 
   const [editOpen, setEditOpen] = useState(false);
-  const [confirmResolve, setConfirmResolve] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
 
   if (isLoading) {
@@ -69,9 +68,8 @@ export function IssueDetailPage() {
   const priority = priorityApiToUi[issue.priority];
   const severity = severityApiToUi[issue.severity];
 
-  const handleResolve = () => {
-    updateMutation.mutate({ id: issue.id, payload: { status: 'RESOLVED' } });
-    setConfirmResolve(false);
+  const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    updateMutation.mutate({ id: issue.id, payload: { status: e.target.value as 'OPEN' | 'IN_PROGRESS' | 'RESOLVED' | 'CLOSED' } });
   };
 
   const handleDelete = () => {
@@ -138,16 +136,6 @@ export function IssueDetailPage() {
                 >
                   Edit
                 </Button>
-                {issue.status !== 'RESOLVED' && issue.status !== 'CLOSED' && (
-                  <Button
-                    variant="secondary"
-                    size="sm"
-                    onClick={() => setConfirmResolve(true)}
-                    icon={<Icon.CheckCircle size={14} />}
-                  >
-                    Mark resolved
-                  </Button>
-                )}
                 <Button
                   variant="ghost"
                   size="sm"
@@ -175,7 +163,22 @@ export function IssueDetailPage() {
 
           <aside className="card meta-card" style={{ position: 'sticky', top: 80 }}>
             <MetaRow label="Status">
-              <StatusBadge status={status} />
+              {me ? (
+                <select
+                  className="input select"
+                  value={issue.status}
+                  disabled={updateMutation.isPending}
+                  onChange={handleStatusChange}
+                  style={{ fontSize: 12, padding: '2px 6px', height: 'auto' }}
+                >
+                  <option value="OPEN">Open</option>
+                  <option value="IN_PROGRESS">In Progress</option>
+                  <option value="RESOLVED">Resolved</option>
+                  <option value="CLOSED">Closed</option>
+                </select>
+              ) : (
+                <StatusBadge status={status} />
+              )}
             </MetaRow>
             <MetaRow label="Priority">
               <PriorityBadge priority={priority} />
@@ -201,17 +204,6 @@ export function IssueDetailPage() {
 
       {editOpen && (
         <CreateEditModal issue={issue} onClose={() => setEditOpen(false)} />
-      )}
-
-      {confirmResolve && (
-        <ConfirmDialog
-          title="Mark this issue as resolved?"
-          description="This issue will move to Resolved. You can reopen it later from the detail page."
-          confirmLabel="Yes, mark resolved"
-          icon={<Icon.CheckCircle size={20} />}
-          onClose={() => setConfirmResolve(false)}
-          onConfirm={handleResolve}
-        />
       )}
 
       {confirmDelete && (
