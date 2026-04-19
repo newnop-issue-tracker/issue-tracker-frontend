@@ -56,7 +56,7 @@ export function DashboardPage({ onCreate }: DashboardPageProps) {
     if (h < 18) return 'Good afternoon';
     return 'Good evening';
   }, []);
-  const firstName = user?.name.split(' ')[0] ?? 'there';
+  const firstName = user?.name?.split(' ')[0] ?? 'there';
   const statData = stats.data;
 
   const myOpenIssues = mine.data?.data ?? [];
