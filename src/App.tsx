@@ -1,34 +1,31 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { Toaster } from "react-hot-toast";
-import NavComponent from "./components/UI/NavComponent";
-import SignIn from "./pages/SignIn";
-import SignUp from "./pages/SignUp";
-import Home from "./pages/Home";
+import { QueryClientProvider } from '@tanstack/react-query';
+import { RouterProvider } from 'react-router-dom';
+import { Toaster } from 'sonner';
+import { router } from '@/router';
+import { queryClient } from '@/lib/queryClient';
+import { useAuthInitializer } from '@/hooks/useAuthInitializer';
 
-function AppLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <>
-      <NavComponent />
-      {children}
-    </>
-  );
+function AppContent() {
+  useAuthInitializer();
+  return <RouterProvider router={router} />;
 }
 
 function App() {
   return (
-    <BrowserRouter>
-      <Toaster position="top-right" reverseOrder={false} />
-      <AppLayout>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/signin" element={<SignIn />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </AppLayout>
-    </BrowserRouter>
+    <QueryClientProvider client={queryClient}>
+      <AppContent />
+      <Toaster
+        position="bottom-right"
+        toastOptions={{
+          style: {
+            background: '#ffffff',
+            color: '#1e293b',
+            border: '1px solid #e2e8f0',
+          },
+        }}
+      />
+    </QueryClientProvider>
   );
 }
 
 export default App;
-

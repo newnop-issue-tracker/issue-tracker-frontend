@@ -54,3 +54,42 @@ const CustomButton = ({
 };
 
 export default CustomButton;
+
+// Dashboard button — used by authenticated app pages
+import type { ButtonHTMLAttributes, ReactNode } from 'react';
+
+export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger';
+export type ButtonSize = 'sm' | 'md';
+
+interface DashButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: ButtonVariant;
+  size?: ButtonSize;
+  icon?: ReactNode;
+  children?: ReactNode;
+}
+
+export function Button({
+  variant = 'secondary',
+  size = 'md',
+  icon,
+  children,
+  className = '',
+  ...rest
+}: DashButtonProps) {
+  const classes = [
+    'btn',
+    `btn-${variant}`,
+    size === 'sm' ? 'btn-sm' : '',
+    icon && !children ? 'btn-icon' : '',
+    className,
+  ]
+    .filter(Boolean)
+    .join(' ');
+
+  return (
+    <button className={classes} {...rest}>
+      {icon}
+      {children}
+    </button>
+  );
+}
