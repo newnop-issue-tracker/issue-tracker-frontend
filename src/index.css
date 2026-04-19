@@ -285,6 +285,24 @@
 .meta-key { font-size: 11px; color: var(--fg-subtle); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
 .meta-val { font-size: 13px; color: var(--fg); }
 
+/* ── Comments ─────────────────────────────────────── */
+.comments-section { margin-top: 24px; }
+.comments-header { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; color: var(--fg); margin-bottom: 16px; }
+.comments-count { background: var(--bg-muted); color: var(--fg-muted); font-size: 11px; font-weight: 600; padding: 1px 7px; border-radius: 999px; }
+.comments-list { display: flex; flex-direction: column; gap: 16px; margin-bottom: 20px; }
+.comment-item { display: flex; gap: 10px; }
+.comment-body { flex: 1; min-width: 0; }
+.comment-author { font-size: 13px; font-weight: 600; color: var(--fg); }
+.comment-text { font-size: 13px; color: var(--fg-muted); line-height: 1.6; margin: 4px 0 0; white-space: pre-wrap; word-break: break-word; }
+.comment-action { font-size: 12px; color: var(--fg-subtle); background: none; border: none; cursor: pointer; padding: 2px 6px; border-radius: 4px; display: flex; align-items: center; gap: 3px; }
+.comment-action:hover { background: var(--bg-muted); color: var(--fg); }
+.comment-action-danger:hover { color: var(--red); }
+.comment-replies { margin-top: 12px; padding-left: 16px; border-left: 2px solid var(--border); display: flex; flex-direction: column; gap: 12px; }
+.comment-form { margin-top: 8px; }
+.reply-banner { display: flex; align-items: center; justify-content: space-between; font-size: 12px; color: var(--fg-muted); background: var(--bg-muted); border-radius: 6px 6px 0 0; padding: 6px 10px; border: 1px solid var(--border); border-bottom: none; }
+.reply-banner button { background: none; border: none; cursor: pointer; color: var(--fg-subtle); display: flex; align-items: center; }
+.reply-banner button:hover { color: var(--fg); }
+
 .prose { color: var(--fg); font-size: 14px; line-height: 1.7; }
 .prose p { margin: 0 0 14px; }
 .prose code { font-family: var(--font-mono); background: var(--bg-muted); padding: 1px 5px; border-radius: 4px; font-size: 12px; }

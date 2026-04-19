@@ -32,4 +32,5 @@ export const QUERY_KEYS = {
   issuesList: (filters: unknown) => ['issues', 'list', filters] as const,
   issue: (id: string) => ['issues', 'detail', id] as const,
   stats: (mine: boolean) => ['issues', 'stats', { mine }] as const,
+  comments: (issueId: string) => ['comments', issueId] as const,
 };

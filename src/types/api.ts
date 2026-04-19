@@ -58,6 +58,17 @@ export interface AuthResponse {
   user: User;
 }
 
+export interface Comment {
+  id: string;
+  body: string;
+  createdAt: string;
+  updatedAt: string;
+  authorId: string;
+  parentId: string | null;
+  author: Author;
+  replies: Omit<Comment, 'replies'>[];
+}
+
 export interface ApiError {
   error: string;
   code: string;

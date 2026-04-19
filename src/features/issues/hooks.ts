@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { issuesApi, type CreateIssuePayload, type ListIssuesParams, type UpdateIssuePayload } from '@/api/issues.api';
+import { commentsApi, type CreateCommentPayload } from '@/api/comments.api';
 import { getErrorMessage } from '@/api/client';
 import { QUERY_KEYS } from '@/lib/constants';
 
@@ -71,6 +72,42 @@ export function useDeleteIssue() {
     },
     onError: (err) => {
       toast.error('Failed to delete issue', { description: getErrorMessage(err) });
+    },
+  });
+}
+
+export function useComments(issueId: string) {
+  return useQuery({
+    queryKey: QUERY_KEYS.comments(issueId),
+    queryFn: () => commentsApi.list(issueId),
+    enabled: !!issueId,
+  });
+}
+
+export function useCreateComment(issueId: string) {
+  const qc = useQueryClient();
+
+  return useMutation({
+    mutationFn: (payload: CreateCommentPayload) => commentsApi.create(issueId, payload),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: QUERY_KEYS.comments(issueId) });
+    },
+    onError: (err) => {
+      toast.error('Failed to post comment', { description: getErrorMessage(err) });
+    },
+  });
+}
+
+export function useDeleteComment(issueId: string) {
+  const qc = useQueryClient();
+
+  return useMutation({
+    mutationFn: (commentId: string) => commentsApi.delete(issueId, commentId),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: QUERY_KEYS.comments(issueId) });
+    },
+    onError: (err) => {
+      toast.error('Failed to delete comment', { description: getErrorMessage(err) });
     },
   });
 }

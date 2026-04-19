@@ -13,6 +13,7 @@ import { SEVERITY_META } from '@/lib/constants';
 import { priorityApiToUi, severityApiToUi, statusApiToUi } from '@/types/api';
 import { CreateEditModal } from '@/components/issues/CreateEditModal';
 import { ConfirmDialog } from '@/components/issues/ConfirmDialog';
+import { CommentsSection } from '@/components/issues/CommentsSection';
 
 const MetaRow = ({ label, children }: { label: string; children: ReactNode }) => (
   <div className="meta-row">
@@ -159,6 +160,8 @@ export function IssueDetailPage() {
                 {renderMarkdown(issue.description || '_No description provided._')}
               </div>
             </div>
+
+            <CommentsSection issueId={issue.id} />
           </div>
 
           <aside className="card meta-card" style={{ position: 'sticky', top: 80 }}>

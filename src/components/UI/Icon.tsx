@@ -99,4 +99,7 @@ export const Icon = {
   )),
   Code: make(() => <path d="M9 8l-4 4 4 4M15 8l4 4-4 4" />),
   FileText: make(() => <path d="M7 3h8l4 4v14H7zM15 3v4h4M10 13h6M10 17h4" />),
+  MessageSquare: make(() => (
+    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+  )),
 };
