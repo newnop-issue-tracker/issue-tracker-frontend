@@ -25,6 +25,8 @@ export interface Issue {
   updatedAt: string;
   authorId: string;
   author: Author;
+  resolvedBy: Author | null;
+  updatedBy: Author | null;
 }
 
 export interface Pagination {

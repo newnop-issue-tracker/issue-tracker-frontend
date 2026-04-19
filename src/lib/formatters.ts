@@ -14,7 +14,8 @@ export function timeAgo(iso: string | number | Date): string {
     .replace(/ ago/, ' ago');
 }
 
-export function initials(name: string): string {
+export function initials(name: string | undefined | null): string {
+  if (!name) return '?';
   return name
     .split(' ')
     .map((part) => part[0])

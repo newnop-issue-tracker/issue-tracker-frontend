@@ -196,8 +196,24 @@ export function IssueDetailPage() {
               <span className="text-sm mono">{timeAgo(issue.createdAt)}</span>
             </MetaRow>
             <MetaRow label="Last updated">
-              <span className="text-sm mono">{timeAgo(issue.updatedAt)}</span>
+              <div className="stack" style={{ gap: 2 }}>
+                <span className="text-sm mono">{timeAgo(issue.updatedAt)}</span>
+                {issue.updatedBy && (
+                  <div className="row gap-2">
+                    <Avatar user={issue.updatedBy} />
+                    <span className="text-xs text-subtle">{issue.updatedBy.name}</span>
+                  </div>
+                )}
+              </div>
             </MetaRow>
+            {issue.resolvedBy && (
+              <MetaRow label="Resolved by">
+                <div className="row gap-2">
+                  <Avatar user={issue.resolvedBy} />
+                  <span className="text-sm">{issue.resolvedBy.name}</span>
+                </div>
+              </MetaRow>
+            )}
           </aside>
         </div>
       </div>
