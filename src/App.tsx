@@ -15,7 +15,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <AppContent />
       <Toaster
-        position="bottom-right"
+        position="top-right"
         toastOptions={{
           style: {
             background: '#ffffff',
